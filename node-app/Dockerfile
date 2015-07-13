@@ -3,12 +3,18 @@ FROM    ubuntu:14.04
 # install nodejs and npm
 RUN     apt-get update
 RUN     apt-get install -y nodejs npm
+RUN     ln -s /usr/bin/nodejs /usr/bin/node
+
+RUN     npm install -g node-inspector
 
 # Bundle app source
-COPY . /src
+COPY    . /src
 
 # Install app dependencies
-RUN   cd /src; npm install
+RUN     cd /src; npm install
 
-EXPOSE  8080
-CMD ["nodejs", "/src/index.js"]
+EXPOSE  3000
+
+WORKDIR    /src
+ENTRYPOINT ["npm"]
+CMD        ["start"]
